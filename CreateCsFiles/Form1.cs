@@ -202,7 +202,7 @@ public partial class Form1 : Form
                         $"using HarmonyCore.Application.Commons.Abstractions.Messaging;\n\nnamespace HarmonyCore.Application{Harmony}.{nameSpace}." +
                         "Commands" + "." + NameSpace + ";" +
                         "\n  public sealed class " + listFileNames[i] + $" : Command<{fileName4}>" +
-                        "\n{\n \n}";
+                        $"\n{{\n public static {fileName1} Map({fileName3} request)\n {{ \n return new {fileName1}\n {{ \n }};\n }} \n}}";
                 }
 
                 else
@@ -212,7 +212,7 @@ public partial class Form1 : Form
                         $"using HarmonyCore.Application.Commons.Abstractions.Messaging;\n\nnamespace HarmonyCore.Application{Harmony}.{nameSpace}." +
                         "Commands" + "." + NameSpace + ";" +
                         "\n  public sealed class " + listFileNames[i] + " : Command" +
-                        "\n{\n \n}";
+                        $"\n{{\n public static {fileName1} Map({fileName3} request)\n {{ \n return new {fileName1}\n {{ \n }};\n }} \n}}";
                 }
             }
 
@@ -324,7 +324,7 @@ public partial class Form1 : Form
                         $"using HarmonyCore.Application.Commons.Abstractions.Messaging;\n\nnamespace HarmonyCore.Application{Harmony}.{nameSpace}." +
                         "Queries" + "." + NameSpace + ";" +
                         "\npublic sealed class " + listFileNames[i] + $" : IQuery<PagedList<{fileName4}>>" +
-                        "\n{\n \n}";
+                        $"\n{{\n public static {fileName1} Map({fileName5} filter)\n {{ \n return new {fileName1}\n {{ \n }};\n }} \n}}";
                 }
                 else
                 {
@@ -333,7 +333,7 @@ public partial class Form1 : Form
                         $"using HarmonyCore.Application.Commons.Abstractions.Messaging;\n\nnamespace HarmonyCore.Application{Harmony}.{nameSpace}." +
                         "Queries" + "." + NameSpace + ";" +
                         "\npublic sealed class " + listFileNames[i] + $" : IQuery<{fileName4}>" +
-                        "\n{\n \n}";
+                        $"\n{{\n public static {fileName1} Map({fileName3} request)\n {{ \n return new {fileName1}\n {{ \n }};\n }} \n}}";
                 }
             }
 
@@ -371,6 +371,14 @@ public partial class Form1 : Form
                         $"public async Task<Maybe<{fileName4}>> Handle({fileName1} request, CancellationToken cancellationToken)"
                         + "\r\n{\n throw new NotImplementedException(); \r\n}\r\n}";
                 }
+            }
+            else if (i == 4)
+            {
+                filePath = Path.Combine(newFolderPath, listFileNames[i] + ".cs");
+                fileContent = $"namespace HarmonyCore.Application{Harmony}.{nameSpace}." + "Queries" + "." + NameSpace +
+                              ";" +
+                              "\n  public sealed class " + listFileNames[i] +
+                              "\n{\npublic string? Search { get; set; }\n public int PageNumber { get; set; }\n public int PageSize { get; set; } \n}";
             }
             else
             {
@@ -415,7 +423,7 @@ public partial class Form1 : Form
                         $"using HarmonyCore.Application.Commons.Abstractions.Messaging;\n\nnamespace HarmonyCore.Application{Harmony}.{nameSpace}." +
                         "Commands" + "." + NameSpace + ";" +
                         "\npublic sealed class " + listFileNames[i] + $" : Command<{fileName4}>" +
-                        "\n{\n \n}";
+                        $"\n{{\n public static {fileName1} Map({fileName3} request)\n {{ \n return new {fileName1}\n {{ \n }};\n }} \n}}";
                 }
 
                 else
@@ -425,7 +433,7 @@ public partial class Form1 : Form
                         $"using HarmonyCore.Application.Commons.Abstractions.Messaging;\n\nnamespace HarmonyCore.Application{Harmony}.{nameSpace}." +
                         "Commands" + "." + NameSpace + ";" +
                         "\npublic sealed class " + listFileNames[i] + " : Command" +
-                        "\n{\n \n}";
+                        $"\n{{\n public static {fileName1} Map({fileName3} request)\n {{ \n return new {fileName1}\n {{ \n }};\n }} \n}}";
                 }
             }
 
@@ -509,7 +517,7 @@ public partial class Form1 : Form
                     "Queries" + "." + NameSpace + ";" +
                     "\npublic sealed class " + listFileNames[i] +
                     $" : IQuery<{TypeOfResponseQueries(fileName4, type)}" +
-                    "\n{\n \n}";
+                    $"\n{{\n public static {fileName1} Map({(type.SelectedIndex == 1 ? fileName5 : fileName3)} {(type.SelectedIndex == 1 ? "filter" : "request")})\n {{ \n return new {fileName1}\n {{ \n }};\n }} \n}}";
             }
 
             else if (i == 1)
@@ -527,6 +535,15 @@ public partial class Form1 : Form
                     "(IUnitOfWork unitOfWork)\r\n    {\r\n        _unitOfWork = unitOfWork;\r\n    } \n" +
                     $"public async Task<Maybe<{TypeOfResponseQueries(fileName4, type)}> Handle({fileName1} request, CancellationToken cancellationToken)"
                     + "\r\n{\n throw new NotImplementedException(); \r\n}\r\n}";
+            }
+
+            else if (i == 4)
+            {
+                filePath = Path.Combine(newFolderPath, listFileNames[i] + ".cs");
+                fileContent = $"namespace HarmonyCore.Application{Harmony}.{nameSpace}." + "Queries" + "." + NameSpace +
+                              ";" +
+                              "\n  public sealed class " + listFileNames[i] +
+                              "\n{\npublic string? Search { get; set; }\n public int PageNumber { get; set; }\n public int PageSize { get; set; } \n}";
             }
 
             else

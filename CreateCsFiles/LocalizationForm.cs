@@ -1,6 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml;
 using CreateCsFiles.Properties;
+using Microsoft.Win32;
 
 namespace CreateCsFiles;
 
@@ -13,8 +14,16 @@ public partial class LocalizationForm : Form
 
     private void LocalizationForm_Load(object sender, EventArgs e)
     {
-        ProjectTB.Text = Settings.Default.Project;
-        OutputTB.Text = Settings.Default.Output;
+        ProjectTB.Text = ReadSetting("Project");
+        OutputTB.Text = ReadSetting("Output");
+    }
+
+    private string ReadSetting(string name)
+    {
+        using (var key = Registry.CurrentUser.OpenSubKey($"Software\\{Application.ProductName}"))
+        {
+            return key?.GetValue(name)?.ToString() ?? string.Empty;
+        }
     }
 
     private void btnStartOperation_Click(object sender, EventArgs e)
@@ -25,16 +34,16 @@ public partial class LocalizationForm : Form
                 ProjectTB.Text;
 
             var resxFaFilePath =
-                ProjectTB.Text + "\\Harmony2024.Domains\\Localizations\\LanguageManager.fa-IR.resx";
-            var resxEnFilePath =
-                ProjectTB.Text + "\\Harmony2024.Domains\\Localizations\\LanguageManager.en-US.resx";
+                ProjectTB.Text + "\\HarmonyCore.Domain\\Localizations\\LanguageManager.resx";
+            //var resxEnFilePath =
+            //    ProjectTB.Text + "\\HarmonyCore.Domain\\Localizations\\LanguageManager.en-US.resx";
 
             ScanAndAddToResx(directoryPath, resxFaFilePath);
-            ScanAndAddToResx(directoryPath, resxEnFilePath);
+            //ScanAndAddToResx(directoryPath, resxEnFilePath);
 
             // Check for keys in RESX files that are not present in .cs files
             CheckMissingKeysInCsFiles(directoryPath, resxFaFilePath, "MissingKeysFa.txt");
-            CheckMissingKeysInCsFiles(directoryPath, resxEnFilePath, "MissingKeysEn.txt");
+            //CheckMissingKeysInCsFiles(directoryPath, resxEnFilePath, "MissingKeysEn.txt");
 
             //UnMatchingErrors.Main2();
             //UnMatching.Main3();
@@ -50,8 +59,14 @@ public partial class LocalizationForm : Form
                     // Get all .cs files in the directory and its subdirectories
                     var csFiles = Directory.GetFiles(directoryPath, "*.cs", SearchOption.AllDirectories);
 
-                    // Regular expression pattern to match Display attributes and extract their values
-                    var displayPattern = @"\[Display\(\s*Name\s*=\s*\""(?<value>[^\""]+)\""\s*\)\]";
+                    // Updated displayPattern to match Display attributes with Name and ResourceType
+                    var displayPattern =
+                        @"\[Display\((?=[^\)]*ResourceType\s*=\s*typeof\(LanguageManager\))[^]]*?Name\s*=\s*""(?<value>[^""]+)""[^]]*?\)\]";
+
+
+                    // Updated displayPattern to match Name property regardless of other properties
+                    //var newDisplayPattern = @"\[Display\((?:[^\)]*?)Name\s*=\s*""(?<value>[^""]+)""(?:[^\)]*?)\)\]";
+
 
                     // Regular expression pattern to match error messages and extract the second string
                     var errorPattern = @"\bnew\s+Error\(\s*\""[^\""]+\""\s*,\s*\""(?<value>[^\""]+)\""\s*\)";
@@ -300,9 +315,9 @@ public partial class LocalizationForm : Form
                     // Check if the output directory exists, if not, create it
                     if (!Directory.Exists(Settings.Default.Output)) Directory.CreateDirectory(Settings.Default.Output);
 
-                    var outputPath = Settings.Default.Output;
-                    File.WriteAllLines(outputPath, missingKeys);
-                    File.WriteAllLines(outputPath, missingKeys);
+                    //var outputPath = Settings.Default.Output;
+                    //File.WriteAllLines(outputPath, missingKeys);
+                    //File.WriteAllLines(outputPath, missingKeys);
                 }
                 catch (Exception ex)
                 {

@@ -67,6 +67,8 @@
             comboBox10 = new ComboBox();
             comboBox11 = new ComboBox();
             chbForHarmony = new CheckBox();
+            CbController = new ComboBox();
+            label7 = new Label();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -394,11 +396,30 @@
             chbForHarmony.Text = "For Harmony";
             chbForHarmony.UseVisualStyleBackColor = true;
             // 
+            // CbController
+            // 
+            CbController.FormattingEnabled = true;
+            CbController.Location = new Point(170, 196);
+            CbController.Name = "CbController";
+            CbController.Size = new Size(219, 38);
+            CbController.TabIndex = 44;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(27, 197);
+            label7.Name = "label7";
+            label7.Size = new Size(115, 30);
+            label7.TabIndex = 45;
+            label7.Text = "Controller :";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(12F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(992, 616);
+            Controls.Add(label7);
+            Controls.Add(CbController);
             Controls.Add(chbForHarmony);
             Controls.Add(comboBox11);
             Controls.Add(comboBox10);
@@ -487,5 +508,7 @@
         private ComboBox comboBox10;
         private ComboBox comboBox11;
         private CheckBox chbForHarmony;
+        private ComboBox CbController;
+        private Label label7;
     }
 }
